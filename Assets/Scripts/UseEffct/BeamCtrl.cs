@@ -8,6 +8,9 @@ public class BeamCtrl : MonoBehaviour
     private ParticleSystem beam;
 
     [SerializeField]
+    private ParticleSystem beam2;
+
+    [SerializeField]
     private CircleCtrl cc;
 
     private GameObject target;
@@ -26,6 +29,11 @@ public class BeamCtrl : MonoBehaviour
         
     }
 
+    void OnParticleCollision(GameObject obj)
+    {
+        obj.GetComponent<Parameters>().Damaged(1);
+    }
+
     public void OnParticleSystemStopped()
     {
         cc.End();
@@ -39,6 +47,7 @@ public class BeamCtrl : MonoBehaviour
     private void Fire()
     {
         beam.Play();
+        beam2.Play();
     }
 
     public void SetTarget(GameObject obj)

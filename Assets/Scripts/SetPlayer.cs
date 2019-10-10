@@ -28,20 +28,21 @@ public class SetPlayer : MonoBehaviour
         GameObject obj = Instantiate(kcschans[0], positions[0], Quaternion.Euler(0,0,0));
         obj.tag = "Player1";
         obj.GetComponent<Parameters>().SetCamera(camera1);
+        obj.GetComponent<Parameters>().SetCanvas(canvas1);
         obj.GetComponent<CharaCtrlR>().enabled = false;
+        obj.transform.SetSiblingIndex(4);
         camera1.GetComponent<CameraCtrl>().SetChara(obj);
         camera1.GetComponent<CameraCtrl>().SetParameters(obj.GetComponent<Parameters>());
         camera1.transform.position = new Vector3(-5f, 8.0f, -10.0f);
-        canvas1.gameObject.transform.parent = obj.transform;
-        canvas1.transform.SetSiblingIndex(1);
 
         obj = Instantiate(kcschans[1], positions[1], Quaternion.Euler(0, 0, 0));
         obj.tag = "Player2";
         obj.GetComponent<CharaCtrlL>().enabled = false;
+        obj.GetComponent<Parameters>().SetCamera(camera2);
+        obj.GetComponent<Parameters>().SetCanvas(canvas2);
+        obj.transform.SetSiblingIndex(5);
         camera2.GetComponent<CameraCtrl>().SetChara(obj);
         camera2.GetComponent<CameraCtrl>().SetParameters(obj.GetComponent<Parameters>());
         camera2.transform.position = new Vector3(5f, 8.0f, -10.0f);
-        canvas2.gameObject.transform.parent = obj.transform;
-        canvas2.transform.SetSiblingIndex(1);
     }
 }

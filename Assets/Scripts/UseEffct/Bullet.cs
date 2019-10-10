@@ -52,15 +52,17 @@ public class Bullet : MonoBehaviour
         Invoke("a", 0.5f);
         initPos = from.transform.position;
         targetPos = to.transform.position;
-        if (Vector3.Magnitude(initPos - targetPos) <= 10f) targetPos = initPos;
-        if (Vector3.Magnitude(initPos - targetPos) >= 250f) targetPos = initPos;
+        if (Vector3.Magnitude(initPos - targetPos) <= 10f) targetPos = initPos + new Vector3(0.1f, 0f, 0f);
+        if (Vector3.Magnitude(initPos - targetPos) >= 250f) targetPos = initPos + new Vector3(0.1f, 0f, 0f);
         t = 0f;
     }
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.tag == tag)
+        if (collider.gameObject.tag == targetTag)
         {
+            Debug.Log("damage");
+            collider.gameObject.GetComponent<Parameters>().Damaged(2);
             bc.Play(transform.position);
             isPlayed = false;
             this.gameObject.SetActive(false);

@@ -17,8 +17,8 @@ public class CursorCtrl : MonoBehaviour
 
     void Start()
     {
-        cursorRt = transform.GetChild(1).GetChild(0).GetComponent<RectTransform>();
-        image = transform.GetChild(1).GetChild(0).GetComponent<Image>();
+        cursorRt = parameters.GetCanvas().transform.GetChild(0).GetComponent<RectTransform>();
+        image = parameters.GetCanvas().transform.GetChild(0).GetComponent<Image>();
     }
 
     void Update()
@@ -26,7 +26,7 @@ public class CursorCtrl : MonoBehaviour
         if (parameters.GetIsLooked())
         {
             image.enabled = true;
-            image.color = new Color(0f, 0f, 0f, 1f);
+            image.color = new Color(1f, 0f, 0f, 1f);
             cursorRt.position
             = RectTransformUtility.WorldToScreenPoint(parameters.GetCamera(), parameters.GetTarget().transform.position + new Vector3(0f, 3f, 0f));
 

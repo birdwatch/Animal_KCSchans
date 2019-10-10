@@ -19,10 +19,10 @@ public class Parameters : MonoBehaviour
 
     private Camera m_camera;
     private Camera t_camera;
+    private Canvas canvas;
     private GameObject target;
-    private bool isLocked;
-
-
+    private bool isLocked = false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -41,21 +41,20 @@ public class Parameters : MonoBehaviour
             target = GameObject.FindGameObjectWithTag("Player1");
             m_camera = GameObject.Find("Camera2").GetComponent<Camera>();
             t_camera = GameObject.Find("Camera").GetComponent<Camera>();
-            Debug.Log(myJoycon);
         }
+
+        nowHP = maxHP;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (isLocked && Vector3.Dot(m_camera.transform.forward, target.transform.position - m_camera.transform.position) < 0) isLocked = false;
     }
 
     void OnWillRenderObject()
     {
-        if (Camera.current.name == t_camera.name) isLocked = true;
-        else if (Camera.current.name == m_camera.name) return;
-        else isLocked = false;
+        if (Camera.current.name == m_camera.name) isLocked = true;
     }
 
     private void SetControllers()
@@ -66,6 +65,8 @@ public class Parameters : MonoBehaviour
         m_joyconR = m_joycons.Find(c => !c.isLeft);
     }
 
+    public void Damaged(int num) { nowHP -= num; }
+
     public GameObject GetTarget(){ return target; }
 
     public Joycon GetJoycon(){ return myJoycon; }
@@ -73,7 +74,11 @@ public class Parameters : MonoBehaviour
     public Camera GetCamera(){ return m_camera; }
     public void SetCamera(Camera c) { m_camera = c; }
 
+    public Canvas GetCanvas() { return canvas; }
+    public void SetCanvas(Canvas c) { canvas = c; }
+
     public bool GetIsLooked() { return isLocked; }
 
     public int GetHP() { return maxHP; }
+    public int GetnowHP() { return nowHP; }
 }

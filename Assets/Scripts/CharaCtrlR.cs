@@ -18,6 +18,7 @@ public class CharaCtrlR : MonoBehaviour
     private Camera m_camera;
     private Joycon joycon;
     private AnimatorStateInfo stateInfo;
+    private float limitLength = 300f;
 
     void Start()
     {
@@ -28,7 +29,7 @@ public class CharaCtrlR : MonoBehaviour
     void Update()
     {
         stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
+        
         MoveCtrl();
         attackCtrl();
     }
@@ -48,6 +49,8 @@ public class CharaCtrlR : MonoBehaviour
         animator.SetBool("is_running", true);
         animator.SetBool("is_escape", false);
 
+        if (joycon.GetButton(Joycon.Button.DPAD_LEFT)) animator.SetBool("is_escape", true);
+
         float angle = Mathf.Atan(displacement.y / displacement.x);
 
         if (displacement.x > 0) angle = -angle + Mathf.PI / 2.0f;
@@ -62,37 +65,45 @@ public class CharaCtrlR : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
+        Vector3 v = new Vector3();
+
         if (stateInfo.IsName("Base Layer.Go_foward") || stateInfo.IsName("Base Layer.Hover"))
         {
-            if ((joycon.GetButton(Joycon.Button.DPAD_DOWN)) || (joycon.GetButton(Joycon.Button.DPAD_LEFT)))
+            if ((joycon.GetButton(Joycon.Button.DPAD_UP)) || (joycon.GetButton(Joycon.Button.DPAD_RIGHT)))
             {
-                transform.position += (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed * 0.6f;
-                m_camera.transform.position += (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed * 0.6f;
+                v = (cameraForward * displacement.y + m_camera.transform.right * displacement.x) *speed * 0.6f;
             }
             else
             {
-                transform.position += (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed;
-                m_camera.transform.position += (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed;
+                v = (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed;
             }
 
         }
         else if (stateInfo.IsName("Base Layer.Escape"))
         {
-            transform.position += (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed * 2f;
-            m_camera.transform.position += (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed * 2f;
+            v = (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed * 2f;
         }
         else if (stateInfo.IsName("Base Layer.Langing"))
         {
+            v = (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed * 0.7f;
             transform.position += (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed * 0.7f;
             m_camera.transform.position += (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed * 0.7f;
         }
 
+        if (transform.position.x >= limitLength && v.x > 0) v.x = 0f;
+        if (transform.position.x <= -limitLength && v.x < 0) v.x = 0f;
+        if (transform.position.z >= limitLength && v.z > 0) v.z = 0f;
+        if (transform.position.z <= -limitLength && v.z < 0) v.z = 0f;
+
+        transform.position += v;
+        m_camera.transform.position += v;
     }
 
     private void attackCtrl()
     {
-        if (joycon.GetButton(Joycon.Button.DPAD_DOWN)) animator.SetInteger("is_swing", 1);
-        else if (joycon.GetButton(Joycon.Button.DPAD_LEFT)) animator.SetInteger("is_swing", 2);
+        if (joycon.GetButton(Joycon.Button.DPAD_UP)) animator.SetInteger("is_swing", 1);
+        else if (joycon.GetButton(Joycon.Button.DPAD_RIGHT)) animator.SetInteger("is_swing", 2);
         else animator.SetInteger("is_swing", 0);
     }
+    
 }

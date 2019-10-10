@@ -35,7 +35,6 @@ public class HummerCtrl : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        Debug.Log(collider);
         if (stateInfo.IsName("Base Layer.Hanmmer_strong"))
             he.Play(transform.position);
 

@@ -34,8 +34,8 @@ public class HPBarCtrl : MonoBehaviour
         nowHP = hp;
     }
 
-    public void updateHP(float Num)
+    public void UpdateHP(float Num)
     {
-        nowHP -= Num;
+        nowHP = Num;
     }
 }

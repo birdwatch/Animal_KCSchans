@@ -447,9 +447,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b839d11a1964ed44f9691d47d838c16f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parameters: {fileID: 0}
   animator: {fileID: 4760214363970431906}
   speed: 0.5
-  HP: 5
 --- !u!114 &1936257186626352325
 MonoBehaviour:
   m_ObjectHideFlags: 0

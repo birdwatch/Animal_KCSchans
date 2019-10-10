@@ -23,8 +23,6 @@ public class CameraCtrl : MonoBehaviour
         joycon = null ?? parameters.GetJoycon();
         target = null ?? parameters.GetTarget();
 
-        Debug.Log(joycon);
-
         if ((joycon.GetButton(Joycon.Button.SL)) && (joycon.GetButton(Joycon.Button.SR)))
         {
             transform.RotateAround(player.transform.position, Vector3.up, 

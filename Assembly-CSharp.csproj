@@ -74,6 +74,7 @@
      <Compile Include="Assets\Scripts\RabbitCtrl.cs" />
      <Compile Include="Assets\Scripts\SetPlayer.cs" />
      <Compile Include="Assets\Scripts\UseEffct\BeamCtrl.cs" />
+     <Compile Include="Assets\Scripts\UseEffct\BeamHittedEffect.cs" />
      <Compile Include="Assets\Scripts\UseEffct\Bullet.cs" />
      <Compile Include="Assets\Scripts\UseEffct\BurstCtrl.cs" />
      <Compile Include="Assets\Scripts\UseEffct\CircleCtrl.cs" />
