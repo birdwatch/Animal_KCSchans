@@ -14,6 +14,7 @@ public class Bullet : MonoBehaviour
 
     private BurstCtrl bc;
     private string targetTag;
+    private GameObject target;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +41,7 @@ public class Bullet : MonoBehaviour
 
             // オブジェクトの移動
             transform.position = Vector3.Lerp(Vector3.Lerp(initPos, relayPos, t)
-            , Vector3.Lerp(relayPos, targetPos, t)
+            , Vector3.Lerp(relayPos, target.transform.position, t)
             , nowLocation);
             t += Time.deltaTime;
         }
@@ -51,6 +52,7 @@ public class Bullet : MonoBehaviour
     {
         Invoke("a", 0.5f);
         initPos = from.transform.position;
+        target = to.gameObject;
         targetPos = to.transform.position;
         if (Vector3.Magnitude(initPos - targetPos) <= 10f) targetPos = initPos + new Vector3(0.1f, 0f, 0f);
         if (Vector3.Magnitude(initPos - targetPos) >= 250f) targetPos = initPos + new Vector3(0.1f, 0f, 0f);
@@ -62,7 +64,7 @@ public class Bullet : MonoBehaviour
         if (collider.gameObject.tag == targetTag)
         {
             Debug.Log("damage");
-            collider.gameObject.GetComponent<Parameters>().Damaged(2);
+            collider.gameObject.GetComponent<Parameters>().Damaged(10);
             bc.Play(transform.position);
             isPlayed = false;
             this.gameObject.SetActive(false);

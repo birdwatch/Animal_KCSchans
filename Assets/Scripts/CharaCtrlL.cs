@@ -15,28 +15,36 @@ public class CharaCtrlL : MonoBehaviour
     [SerializeField]
     private float speed;
 
+    private int userNum = 1;
     private Camera m_camera;
-    private Joycon joycon;
     private AnimatorStateInfo stateInfo;
-    private float limitLength = 300f;
+    private float limitLength = 125f;
+    private GameManeger gameManeger;
+    private float time = 0;
+
+    private float angle = 1f;
+    private float t = 0;
 
     void Start()
     {
         m_camera = parameters.GetCamera();
-        joycon = parameters.GetJoycon();
     }
 
     void Update()
     {
+        time += Time.deltaTime;
         stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         
         MoveCtrl();
         AttackCtrl();
+        if (parameters.GetnowHP() <= 0) animator.SetBool("is_killed", true);
     }
 
     private void MoveCtrl()
     {
-        Vector2 displacement = new Vector2(-joycon.GetStick()[1], joycon.GetStick()[0]);
+        if (gameManeger.GetIsPaused()) return;
+
+        Vector2 displacement = new Vector2(Joycon.GetAxis(userNum)[0], Joycon.GetAxis(userNum)[1]);
         Vector3 cameraForward = Vector3.Scale(m_camera.transform.forward, new Vector3(1, 0, 1)).normalized;
 
         if (displacement.magnitude == 0)
@@ -49,13 +57,20 @@ public class CharaCtrlL : MonoBehaviour
         animator.SetBool("is_running", true);
         animator.SetBool("is_escape", false);
 
-        if (joycon.GetButton(Joycon.Button.DPAD_RIGHT)) animator.SetBool("is_escape", true);
+        if (time >= 2.1f && Joycon.GetButton(userNum, Joycon.Button.ESCAPE))
+        {
+            animator.SetBool("is_escape", true);
+            time = 0f;
+        }
 
-        float angle = Mathf.Atan(displacement.y / displacement.x);
+        angle = Mathf.Atan(displacement.y / displacement.x);
 
-        if (displacement.x > 0) angle = (-angle + Mathf.PI / 2.0f) / Mathf.PI * 180f + m_camera.transform.localEulerAngles.y;
-        else angle = (Mathf.PI + (-angle + Mathf.PI / 2.0f)) / Mathf.PI * 180f + m_camera.transform.localEulerAngles.y;
+        if (displacement.x > 0) angle = (-angle + Mathf.PI / 2.0f) / Mathf.PI * 180f;
+        else angle = (Mathf.PI + (-angle + Mathf.PI / 2.0f)) / Mathf.PI * 180f;
         
+
+        angle += m_camera.transform.localEulerAngles.y;
+
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
         Vector3 v = new Vector3();
@@ -64,15 +79,15 @@ public class CharaCtrlL : MonoBehaviour
         {
             v = (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed;
 
-            if ((joycon.GetButton(Joycon.Button.DPAD_DOWN)) || (joycon.GetButton(Joycon.Button.DPAD_LEFT)))
+            if ((Joycon.GetButton(userNum, Joycon.Button.ATTACK_S)) || (Joycon.GetButton(userNum, Joycon.Button.ATTACK_W)))
             {
-                v *= 0.6f;
+                v *= 0.9f;
             }
             
         }
         else if (stateInfo.IsName("Base Layer.Escape"))
         {
-            v = (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed * 2f;
+            v = (cameraForward * displacement.y + m_camera.transform.right * displacement.x) * speed * 1.8f;
         }
         else if (stateInfo.IsName("Base Layer.Langing"))
         {
@@ -90,8 +105,10 @@ public class CharaCtrlL : MonoBehaviour
 
     private void AttackCtrl()
     {
-        if (joycon.GetButton(Joycon.Button.DPAD_DOWN)) animator.SetInteger("is_swing", 1);
-        else if (joycon.GetButton(Joycon.Button.DPAD_LEFT)) animator.SetInteger("is_swing", 2);
+        if (Joycon.GetButton(userNum, Joycon.Button.ATTACK_W)) animator.SetInteger("is_swing", 1);
+        else if (Joycon.GetButton(userNum, Joycon.Button.ATTACK_S)) animator.SetInteger("is_swing", 2);
         else animator.SetInteger("is_swing", 0);
     }
+
+    public void SetGameManeger(GameManeger gm) { gameManeger = gm; }
 }

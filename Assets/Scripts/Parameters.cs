@@ -8,42 +8,25 @@ public class Parameters : MonoBehaviour
 {
     [SerializeField]
     private int maxHP;
-    private int nowHP;
 
-    private Joycon myJoycon;
-    private List<Joycon> m_joycons;
-    private Joycon m_joyconL;
-    private Joycon m_joyconR;
-    private static readonly Joycon.Button[] m_buttons =
-        Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
+    [SerializeField]
+    private Animator animator;
+
+    private int nowHP;
 
     private Camera m_camera;
     private Camera t_camera;
     private Canvas canvas;
     private GameObject target;
     private bool isLocked = false;
+    private bool isPaused = false;
     
     // Start is called before the first frame update
     void Start()
     {
-        SetControllers();
-
-        if (gameObject.tag == "Player1")
-        {
-            myJoycon = m_joyconL;
-            target = GameObject.FindGameObjectWithTag("Player2");
-            m_camera = GameObject.Find("Camera").GetComponent<Camera>();
-            t_camera = GameObject.Find("Camera2").GetComponent<Camera>();
-        }
-        else if (gameObject.tag == "Player2")
-        {
-            myJoycon = m_joyconR;
-            target = GameObject.FindGameObjectWithTag("Player1");
-            m_camera = GameObject.Find("Camera2").GetComponent<Camera>();
-            t_camera = GameObject.Find("Camera").GetComponent<Camera>();
-        }
-
         nowHP = maxHP;
+        if(this.gameObject.tag == "Player1") SetTarget(GameObject.FindGameObjectWithTag("Player2"));
+        if(this.gameObject.tag == "Player2") SetTarget(GameObject.FindGameObjectWithTag("Player1"));
     }
 
     // Update is called once per frame
@@ -57,19 +40,13 @@ public class Parameters : MonoBehaviour
         if (Camera.current.name == m_camera.name) isLocked = true;
     }
 
-    private void SetControllers()
+    public void Damaged(int num)
     {
-        m_joycons = JoyconManager.Instance.j;
-        if (m_joycons == null || m_joycons.Count <= 0) return;
-        m_joyconL = m_joycons.Find(c => c.isLeft);
-        m_joyconR = m_joycons.Find(c => !c.isLeft);
+        if(!animator.GetCurrentAnimatorStateInfo(0).IsName("Escape")) nowHP -= num;
     }
 
-    public void Damaged(int num) { nowHP -= num; }
-
     public GameObject GetTarget(){ return target; }
-
-    public Joycon GetJoycon(){ return myJoycon; }
+    public void SetTarget(GameObject o){ target = o; }
 
     public Camera GetCamera(){ return m_camera; }
     public void SetCamera(Camera c) { m_camera = c; }

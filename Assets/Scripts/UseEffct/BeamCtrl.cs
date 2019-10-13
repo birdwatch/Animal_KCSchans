@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BeamCtrl : MonoBehaviour
 {
+
     [SerializeField]
     private ParticleSystem beam;
 
@@ -13,19 +14,14 @@ public class BeamCtrl : MonoBehaviour
     [SerializeField]
     private CircleCtrl cc;
 
-    private GameObject target;
-
     private bool isPlayed = false;
 
-    public void Play(Vector3 pos)
+    public void Play(GameObject target)
     {
-        if (!isPlayed)
-        {
             isPlayed = true;
             transform.position = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
             Invoke("Fire", 1f);
             cc.Play(transform.position);
-        }
         
     }
 
@@ -36,6 +32,7 @@ public class BeamCtrl : MonoBehaviour
 
     public void OnParticleSystemStopped()
     {
+        this.gameObject.SetActive(false);
         cc.End();
     }
 
@@ -48,10 +45,5 @@ public class BeamCtrl : MonoBehaviour
     {
         beam.Play();
         beam2.Play();
-    }
-
-    public void SetTarget(GameObject obj)
-    {
-        target = obj;
     }
 }

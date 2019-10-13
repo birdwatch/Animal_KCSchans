@@ -17,20 +17,19 @@ public class FoxAttackCtrl : MonoBehaviour
 
     [SerializeField]
     private Animator animator;
-    
-    private BeamCtrl bc;
+
+    [SerializeField]
+    private Beam bc;
 
     private AnimatorStateInfo stateInfo;
-    private float timeOut= 1f;
+    private float timeOut= 1.5f;
     private float timeElapsed = 0f;
-    private Joycon joycon;
+    private bool isAttacking = false;
+    private int userNum = 1;
 
     // Start is called before the first frame update
     void Start()
     {
-        bc = GameObject.Find("Beam").GetComponent<BeamCtrl>();
-        bc.SetTarget(parameters.GetTarget());
-        joycon = parameters.GetJoycon();
     }
 
     // Update is called once per frame
@@ -38,36 +37,45 @@ public class FoxAttackCtrl : MonoBehaviour
     {
         stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
+        if (stateInfo.IsName("Base Layer.Idle"))
+        {
+            isAttacking = false;
+        } 
         if (stateInfo.IsName("Base Layer.Go_foward") 
-            && ((joycon.GetButton(Joycon.Button.DPAD_DOWN)) || (joycon.GetButton(Joycon.Button.DPAD_LEFT))))
+            && ((Joycon.GetButton(userNum, Joycon.Button.ATTACK_W)) || (Joycon.GetButton(userNum, Joycon.Button.ATTACK_S))))
         {
             mc.Play();
-            Fire();
+            Fire(1);
         }
-        else if (stateInfo.IsName("Base Layer.Swing_medium"))
+        else if (!isAttacking && stateInfo.IsName("Base Layer.Swing_medium"))
         {
-            mc.Play();
-            Fire();
+            fc.FireBullet();
+            Fire(1f);
+
+            isAttacking = true;
         }
-        else if (stateInfo.IsName("Base Layer.Swing_strong"))
+        else if (!isAttacking && stateInfo.IsName("Base Layer.Swing_strong"))
         {
-            bc.Play(transform.position);
+            bc.FireBeam();
+            mc.Quit();
+            isAttacking = true;
         }
 
 
-        if ((joycon.GetButtonUp(Joycon.Button.DPAD_DOWN) && !joycon.GetButton(Joycon.Button.DPAD_LEFT))
-            || (!joycon.GetButton(Joycon.Button.DPAD_DOWN) && joycon.GetButtonUp(Joycon.Button.DPAD_LEFT))
-            || (!joycon.GetButton(Joycon.Button.DPAD_DOWN) && !joycon.GetButton(Joycon.Button.DPAD_LEFT)))
+        if ((Joycon.GetButtonUp(userNum, Joycon.Button.ATTACK_W) && !Joycon.GetButton(userNum, Joycon.Button.ATTACK_S))
+            || (!Joycon.GetButton(userNum, Joycon.Button.ATTACK_W) && Joycon.GetButtonUp(userNum, Joycon.Button.ATTACK_S))
+            || (!Joycon.GetButton(userNum, Joycon.Button.ATTACK_W) && !Joycon.GetButton(userNum, Joycon.Button.ATTACK_S)))
         {
             mc.Quit();
         }
+
+        timeElapsed += Time.deltaTime;
     }
 
-    private void Fire()
+    private void Fire(float i)
     {
-        timeElapsed += Time.deltaTime;
 
-        if (timeElapsed >= timeOut)
+        if (timeElapsed >= timeOut * i)
         {
             fc.FireBullet();
             timeElapsed = 0.0f;

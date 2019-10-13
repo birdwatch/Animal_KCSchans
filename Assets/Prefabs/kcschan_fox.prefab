@@ -358,6 +358,7 @@ GameObject:
   - component: {fileID: 8975149712156125521}
   - component: {fileID: 5728666981189525657}
   - component: {fileID: 307775224782065288}
+  - component: {fileID: 517858390092368538}
   m_Layer: 0
   m_Name: kcschan_fox
   m_TagString: Untagged
@@ -419,7 +420,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e389a1263603cc4392ac613fdfb4402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 100
+  maxHP: 300
+  animator: {fileID: 4760214363970431906}
 --- !u!114 &5584643090561090969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,7 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b839d11a1964ed44f9691d47d838c16f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parameters: {fileID: 0}
+  parameters: {fileID: 6141541264422355901}
   animator: {fileID: 4760214363970431906}
   speed: 0.5
 --- !u!114 &1936257186626352325
@@ -466,6 +468,7 @@ MonoBehaviour:
   mc: {fileID: 7637852840729825997}
   fc: {fileID: 1350922974115732033}
   animator: {fileID: 4760214363970431906}
+  bc: {fileID: 517858390092368538}
 --- !u!114 &875601874609882013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,6 +564,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &517858390092368538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936257186626352331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8a6d04e132dac84b8efe286c39d08d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beam: {fileID: 4843035005769566875, guid: 2cba20aa8a82b4642991a9c3dd0549e6, type: 3}
+  parameters: {fileID: 6141541264422355901}
 --- !u!1 &2133438045688304108
 GameObject:
   m_ObjectHideFlags: 0

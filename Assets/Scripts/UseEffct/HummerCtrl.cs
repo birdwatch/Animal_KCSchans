@@ -23,24 +23,24 @@ public class HummerCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (stateInfo.IsName("Base Layer.Idle")) isAttacking = false;
         stateInfo = animator.GetCurrentAnimatorStateInfo(0);
     }
 
     void OnTriggerStay(Collider collider)
     {
-        
-        if (stateInfo.IsName("Base Layer.Hanmmer"))
+        if (!isAttacking && stateInfo.IsName("Base Layer.Hanmmer"))
+        {
+            isAttacking = true;
             he.Play(transform.position);
+            collider.gameObject.GetComponent<Parameters>().Damaged(15);
+        }
+
+        if (!isAttacking && stateInfo.IsName("Base Layer.Hanmmer_strong"))
+        {
+            isAttacking = true;
+            he.Play(transform.position);
+            collider.gameObject.GetComponent<Parameters>().Damaged(25);
+        }
     }
-
-    void OnTriggerEnter(Collider collider)
-    {
-        if (stateInfo.IsName("Base Layer.Hanmmer_strong"))
-            he.Play(transform.position);
-
-        if (stateInfo.IsName("Base Layer.Hanmmer"))
-            he.Play(transform.position);
-    }
-
-    
 }
