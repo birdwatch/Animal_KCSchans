@@ -11,12 +11,26 @@ public class Beam : MonoBehaviour
     private Parameters parameters;
 
     private int count = 15;
+    private int layer;
     private List<GameObject> beams;
     private GameObject target;
 
     // Start is called before the first frame update
     void Start()
     {
+        if (this.gameObject.layer == 10) // Player1
+        {
+            layer = 8; // Magic1
+        }
+        else if (this.gameObject.layer == 11) // Player2
+        {
+            layer = 9; // Magic2
+        }
+        else
+        {
+            Debug.Log("Error");
+        }
+
         target = parameters.GetTarget();
         beams = new List<GameObject>();
         PoolBeams();
@@ -33,6 +47,7 @@ public class Beam : MonoBehaviour
         {
             GameObject obj = Instantiate<GameObject>(beam);
             beams.Add(obj);
+            obj.layer = layer;
             obj.SetActive(false);
         }
     }

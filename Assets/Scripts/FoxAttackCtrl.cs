@@ -25,11 +25,13 @@ public class FoxAttackCtrl : MonoBehaviour
     private float timeOut= 1.5f;
     private float timeElapsed = 0f;
     private bool isAttacking = false;
-    private int userNum = 1;
+    private int userNum = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        if (this.gameObject.layer == 10) userNum = 1;
+        if (this.gameObject.layer == 11) userNum = 2;
     }
 
     // Update is called once per frame

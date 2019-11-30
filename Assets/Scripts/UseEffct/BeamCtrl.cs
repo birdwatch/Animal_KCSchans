@@ -18,10 +18,10 @@ public class BeamCtrl : MonoBehaviour
 
     public void Play(GameObject target)
     {
-            isPlayed = true;
-            transform.position = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
-            Invoke("Fire", 1f);
-            cc.Play(transform.position);
+        isPlayed = true;
+        transform.position = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
+        Invoke("Fire", 1f);
+        cc.Play(transform.position);
         
     }
 

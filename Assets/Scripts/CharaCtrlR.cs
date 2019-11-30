@@ -31,6 +31,7 @@ public class CharaCtrlR : MonoBehaviour
 
     void Update()
     {
+        animator.SetBool("is_freezed", false);
         stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         
         MoveCtrl();

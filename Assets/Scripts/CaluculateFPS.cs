@@ -16,11 +16,19 @@ public class CaluculateFPS : MonoBehaviour
 
     private bool isDisplay = false;
 
+    static CaluculateFPS instance;
+
+    public static CaluculateFPS Instance { get { return instance; } }
+
     /// <summary>
     /// Initialization
     /// </summary>
     private void Awake()
     {
+        if (instance != null) Destroy(gameObject);
+        instance = this;
+        DontDestroyOnLoad(this.gameObject);
+
         UpdateUISize();
     }
 

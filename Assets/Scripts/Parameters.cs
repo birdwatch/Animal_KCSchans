@@ -45,6 +45,11 @@ public class Parameters : MonoBehaviour
         if(!animator.GetCurrentAnimatorStateInfo(0).IsName("Escape")) nowHP -= num;
     }
 
+    public void Freezed()
+    {
+        animator.SetBool("is_freezed", true);
+    }
+
     public GameObject GetTarget(){ return target; }
     public void SetTarget(GameObject o){ target = o; }
 

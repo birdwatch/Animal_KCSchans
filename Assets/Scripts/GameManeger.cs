@@ -17,6 +17,7 @@ public class GameManeger : MonoBehaviour
 
     private bool isPaused = false;
     private bool isEnd = false;
+    private int t = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -25,12 +26,6 @@ public class GameManeger : MonoBehaviour
         text2.enabled = false;
 
         Debug.Log("displays connected: " + Display.displays.Length);
-        // Display.displays[0] は主要デフォルトディスプレイで、常に ON。
-        // 追加ディスプレイが可能かを確認し、それぞれをアクティベートします。
-        if (Display.displays.Length > 1)
-            Display.displays[1].Activate();
-        if (Display.displays.Length > 2)
-            Display.displays[2].Activate();
 
     }
 
@@ -40,7 +35,14 @@ public class GameManeger : MonoBehaviour
 
         PauseCtrl();
 
-        if(isEnd && ((Input.GetKeyDown(KeyCode.Z)) || (Joycon.GetButton(1,Joycon.Button.SHOULDER_1) && Joycon.GetButton(2,Joycon.Button.SHOULDER_1)))) BackTitle();
+        if (t == 0 && isEnd && 
+            ((Input.GetKeyDown(KeyCode.Z)) || (Joycon.GetButton(1, Joycon.Button.SHOULDER_1) && Joycon.GetButton(2, Joycon.Button.SHOULDER_1)))
+            )
+        {
+
+            BackTitle();
+            t++;
+        }
     }
 
     public void GetWinner(GameObject loser)
@@ -84,7 +86,7 @@ public class GameManeger : MonoBehaviour
     
     private void a() { isEnd = true; }
 
-    private void BackTitle() { SceneManager.LoadScene("title"); }
+    private void BackTitle() { SceneManager.LoadScene("Title"); }
 
     public bool GetIsPaused() { return isPaused; }
 }

@@ -32,6 +32,7 @@ public class CharaCtrlL : MonoBehaviour
 
     void Update()
     {
+        animator.SetBool("is_freezed", false);
         time += Time.deltaTime;
         stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         
@@ -54,6 +55,7 @@ public class CharaCtrlL : MonoBehaviour
             return;
         }
 
+        Debug.Log("d");
         animator.SetBool("is_running", true);
         animator.SetBool("is_escape", false);
 

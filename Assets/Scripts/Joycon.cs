@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Joycon : MonoBehaviour
 {
@@ -107,6 +108,7 @@ public class Joycon : MonoBehaviour
 
     void Start()
     {
+        if (instance != this) Destroy(gameObject);
         m_joycons = JoyconManager.Instance.j;
 
         if (m_joycons == null || m_joycons.Count <= 0) return;
@@ -117,6 +119,7 @@ public class Joycon : MonoBehaviour
 
     void Update()
     {
+        //if (SceneManager.GetActiveScene().name == "test") Destroy(gameObject);
         joyconNum = Input.GetJoystickNames().Length;
         if (Input.GetKeyDown(KeyCode.J) && Input.GetKey(KeyCode.LeftControl)) isShow = !isShow;
     }

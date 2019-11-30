@@ -6,7 +6,6 @@ using UnityEngine;
 using System;
 public class JoyconManager : MonoBehaviour
 {
-    public GameObject l;
     // Settings accessible via Unity
     public bool EnableIMU = true;
     public bool EnableLocalize = true;
@@ -31,6 +30,7 @@ public class JoyconManager : MonoBehaviour
 
     void Awake()
     {
+        if (instance != null) Destroy(gameObject);
         instance = this;
         int i = 0;
 
@@ -42,9 +42,6 @@ public class JoyconManager : MonoBehaviour
 
         ptr = HIDapi.hid_enumerate(vendor_id, 0x0);
         IntPtr top_ptr = ptr;
-
-
-        Destroy(l);
 
         if (ptr == IntPtr.Zero)
         {

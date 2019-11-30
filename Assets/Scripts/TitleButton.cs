@@ -35,7 +35,8 @@ public class TitleButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.Space))) onClick();
+        if ((Input.GetKeyDown(KeyCode.Space))
+            || (Joycon.GetButton(1, Joycon.Button.SHOULDER_2) && Joycon.GetButton(2, Joycon.Button.SHOULDER_2))) onClick();
 
         ChangeScale();
 
@@ -44,8 +45,7 @@ public class TitleButton : MonoBehaviour
 
     public void onClick()
     {
-        canvas.gameObject.SetActive(true);
-        ls.LoadNextScene();
+        SceneManager.LoadScene("Select");
     }
 
     private void ChangeScale()
